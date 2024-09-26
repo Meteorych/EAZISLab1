@@ -54,8 +54,14 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="Auto" Header="URI документа" DisplayMemberBinding="{Binding Doc}"/>
-                    <GridViewColumn Header="Найденный контекст" DisplayMemberBinding="{Binding Text}"/>
-                    <GridViewColumn Header="Совпадения">
+                    <GridViewColumn Header="Найденный контекст" DisplayMemberBinding="{Binding Text}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Совпадения" Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding QueryText}" FontWeight="Bold"/>

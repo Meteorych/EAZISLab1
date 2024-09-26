@@ -25,14 +25,14 @@ public class HttpClientService
         var response = await _httpClient.PostAsJsonAsync(ApiPathConstants.MainQueryPath, queryObject);
         if (response.IsSuccessStatusCode)
         {
+            var queryWords = query.Split(new[] { ' ', ',', '.', ';', ':' }, StringSplitOptions.RemoveEmptyEntries);
             var responseContent = await response.Content.ReadFromJsonAsync<List<ResponseBody>>();
             if (string.IsNullOrEmpty(query)) return responseContent;
             responseContent?.ForEach(rb =>
             {
-                if (rb.Text.Contains(query))
-                {
-                    rb.QueryText = query;
-                }
+                var matchingWords = queryWords.Where(word => rb.Text.Contains(word, StringComparison.OrdinalIgnoreCase));
+
+                rb.QueryText = string.Join(" ", matchingWords);
             });
             return responseContent;
         }

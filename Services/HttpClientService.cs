@@ -6,7 +6,7 @@ namespace EAZISLab1.Services;
 
 public class HttpClientService
 {
-    private const string BaseUrl = "http://192.168.193.163";
+    private const string BaseUrl = "https://6efe-80-79-118-244.ngrok-free.app";
     private const string HandledDocumentsSection = "paths.txt";
 
     private readonly HttpClient _httpClient;
@@ -29,8 +29,10 @@ public class HttpClientService
             if (string.IsNullOrEmpty(query)) return responseContent;
             responseContent?.ForEach(rb =>
             {
-                var replace = rb.Text.Replace(query, $"**{query}**");
-                rb.Text = replace;
+                if (rb.Text.Contains(query))
+                {
+                    rb.QueryText = query;
+                }
             });
             return responseContent;
         }
@@ -61,4 +63,5 @@ public class ResponseBody
 {
     public string Doc { get; set; }
     public string Text { get; set; }
+    public string? QueryText { get; set; }
 }

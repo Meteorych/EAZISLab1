@@ -8,7 +8,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Height="{x:Static SystemParameters.PrimaryScreenHeight}" 
         Width="{x:Static SystemParameters.PrimaryScreenWidth}" 
-        Title="MainWindow"  WindowState="Maximized" MinWidth ="500" MinHeight="" Loaded="MainWindow_OnLoaded">
+        Title="MainWindow"  WindowState="Maximized" MinWidth ="1200" MinHeight="500" Loaded="MainWindow_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -50,11 +50,18 @@
                 </Button.Style>
             </Button>
         </StackPanel>
-        <ListView Name="DataView" ItemsSource ="{Binding ResponseData}" Grid.Row="1" ToolTip="Вывод данных: в левой колонке - URI документа, в правой - найденный в нем соответствующий текст">
+        <ListView Name="DataView" ItemsSource ="{Binding ResponseData}" Grid.Row="1" ToolTip="Вывод данных: в левой колонке - URI документа, в центральной - найденный в нем соответствующий контекст, в правой текст, совпадающий с запросом">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="Auto" Header="URI документа" DisplayMemberBinding="{Binding Doc}"/>
-                    <GridViewColumn Header="Найденный текст" DisplayMemberBinding="{Binding Text}"/>
+                    <GridViewColumn Header="Найденный контекст" DisplayMemberBinding="{Binding Text}"/>
+                    <GridViewColumn Header="Совпадения">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding QueryText}" FontWeight="Bold"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

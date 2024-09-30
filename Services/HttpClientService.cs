@@ -1,12 +1,14 @@
-﻿using System.Net.Http;
+﻿using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 
 namespace EAZISLab1.Services;
 
 public class HttpClientService
 {
-    private const string BaseUrl = "https://6efe-80-79-118-244.ngrok-free.app";
+    private const string BaseUrl = "https://f494-37-214-77-149.ngrok-free.app";
     private const string HandledDocumentsSection = "paths.txt";
 
     private readonly HttpClient _httpClient;
@@ -19,16 +21,16 @@ public class HttpClientService
         _httpClient.BaseAddress = new Uri(BaseUrl);
     }
 
-    public async Task<List<ResponseBody>?> SendQuery(string query, int textLength)
+    public async Task<Response?> SendQuery(string query, int textLength)
     {
         var queryObject = new QueryBody { Query = query, Limit = textLength };
         var response = await _httpClient.PostAsJsonAsync(ApiPathConstants.MainQueryPath, queryObject);
         if (response.IsSuccessStatusCode)
         {
             var queryWords = query.Split(new[] { ' ', ',', '.', ';', ':' }, StringSplitOptions.RemoveEmptyEntries);
-            var responseContent = await response.Content.ReadFromJsonAsync<List<ResponseBody>>();
+            var responseContent = await response.Content.ReadFromJsonAsync<Response>();
             if (string.IsNullOrEmpty(query)) return responseContent;
-            responseContent?.ForEach(rb =>
+            responseContent?.Results.ForEach(rb =>
             {
                 var matchingWords = queryWords.Where(word => rb.Text.Contains(word, StringComparison.OrdinalIgnoreCase));
 
@@ -50,6 +52,18 @@ public class HttpClientService
     {
         return _configuration.GetSection(HandledDocumentsSection).Value?.Split(",") ?? throw new InvalidOperationException("You should configure sending documents.");
     }
+}
+
+public class Response
+{
+    public Response()
+    {
+        Results = new List<ResponseBody>();
+    }
+
+    public List<ResponseBody> Results { get; set; }
+    public float Recall { get; set; }
+    public float Error { get; set; }
 }
 
 public class QueryBody

@@ -18,7 +18,7 @@ namespace EAZISLab1;
 /// </summary>
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
-    public List<ResponseBody>? ResponseData
+    public Response? ResponseData
     {
         get => _responseData;
         set
@@ -43,7 +43,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private IConfiguration _configuration;
 
-    private List<ResponseBody>? _responseData;
+    private Response? _responseData;
     private int _textLength;
 
     public MainWindow()
@@ -94,42 +94,3 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 }
 
-public class MarkdownParser
-{
-    public static IEnumerable<Inline> Parse(string text)
-    {
-        var inlines = new List<Inline>();
-        var parts = text.Split(new[] { "**" }, StringSplitOptions.None);
-
-        for (int i = 0; i < parts.Length; i++)
-        {
-            if (i % 2 == 0)
-            {
-                inlines.Add(new Run { Text = parts[i] });
-            }
-            else
-            {
-                inlines.Add(new Run { Text = parts[i], Foreground = Brushes.Red });
-            }
-        }
-
-        return inlines;
-    }
-}
-
-public class MarkdownConverter : IValueConverter
-{
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        if (value is string text)
-        {
-            return MarkdownParser.Parse(text).ToArray();
-        }
-        return null;
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-}

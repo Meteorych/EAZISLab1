@@ -8,7 +8,7 @@ namespace EAZISLab1.Services;
 
 public class HttpClientService
 {
-    private const string BaseUrl = "https://f494-37-214-77-149.ngrok-free.app";
+    private const string BaseUrl = "https://3943-80-79-118-244.ngrok-free.app";
     private const string HandledDocumentsSection = "paths.txt";
 
     private readonly HttpClient _httpClient;
@@ -62,8 +62,17 @@ public class Response
     }
 
     public List<ResponseBody> Results { get; set; }
+
     public float Recall { get; set; }
+
     public float Error { get; set; }
+
+    public float Accuracy { get; set; }
+
+    public float Precision { get; set; }
+
+    [JsonPropertyName("f_measure")]
+    public float FMeasure { get; set; }
 }
 
 public class QueryBody

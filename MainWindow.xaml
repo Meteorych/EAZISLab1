@@ -49,7 +49,9 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <TextBlock>Recall = <Run Text="{Binding ResponseData.Recall}"/>, Error = <Run Text="{Binding ResponseData.Error}"/></TextBlock>
+            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Recall = <Run Text="{Binding ResponseData.Recall}"/>, Error = <Run Text="{Binding ResponseData.Error}"/>, 
+                Accuracy = <Run Text="{Binding ResponseData.Accuracy}"/>, Precision = <Run Text="{Binding ResponseData.Precision}"/>,
+            F_measure = <Run Text="{Binding ResponseData.FMeasure}"/></TextBlock>
         </StackPanel>
         <ListView Name="DataView" ItemsSource ="{Binding ResponseData.Results}" Grid.Row="1" ToolTip="Вывод данных: в левой колонке - URI документа, в центральной - найденный в нем соответствующий контекст, в правой текст, совпадающий с запросом">
             <ListView.View>
